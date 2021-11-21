@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 import cors       from 'cors';
 import dotenv     from 'dotenv';
-
+import morgan     from 'morgan';
 import Actuator from './config/Actuator';
 
 const { config } = dotenv;
@@ -27,7 +27,7 @@ class App {
     }
     
     initializeMiddlewares(){
-        this.app.use(new ErrorHandler().handle)
+        this.app.use(new ErrorHandler().handle);
     }
     
     initializeControllers(){
@@ -35,6 +35,7 @@ class App {
         this.app.use(express.json());
         this.app.use(express.urlencoded({ extended: true }));
         this.app.use(cors());
+        this.app.use(morgan(`short`));
         this.app.use('/', routes);
     }
 }

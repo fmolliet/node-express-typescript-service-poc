@@ -1,4 +1,3 @@
-import { ReqBody } from 'express';
-export default interface RequestBody extends ReqBody {
-    urls: Array<string>
+export default interface RequestBody extends Request{
+    urls: Array<string>;
 }
