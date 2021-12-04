@@ -7,11 +7,15 @@ import Actuator from './config/Actuator';
 const { config } = dotenv;
 
 import routes     from './Routes';
-import { Container } from 'typedi';
+import { Container, Inject } from 'typedi';
 import ErrorHandler from './middlewares/ErrorHandler';
+import CacheProvider from './config/CacheProvider';
 
 class App {
     app: Express;
+    
+    @Inject()
+    cacheInstance: CacheProvider = Container.get(CacheProvider);
     
     constructor() {
         config();
@@ -19,11 +23,13 @@ class App {
         this.initializeServices()
         this.initializeControllers();
         this.initializeMiddlewares();
+        
     }
     
-    initializeServices(){
+    async initializeServices(){
         //const morganInstance = Container.get(Morgan)
         //this.express.use(morganInstance.getInstance());
+        this.cacheInstance = await this.cacheInstance.getInstance();
     }
     
     initializeMiddlewares(){
